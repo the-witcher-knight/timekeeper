@@ -7,6 +7,7 @@ import (
 	"github.com/the-witcher-knight/timekeeper/cmd/asciiart"
 	"github.com/the-witcher-knight/timekeeper/internal/blockchain"
 	"github.com/the-witcher-knight/timekeeper/internal/controller/attendance"
+	"github.com/the-witcher-knight/timekeeper/internal/controller/bcwatch"
 	"github.com/the-witcher-knight/timekeeper/internal/controller/user"
 	v1 "github.com/the-witcher-knight/timekeeper/internal/handler/rest/v1"
 	"github.com/the-witcher-knight/timekeeper/internal/ids"
@@ -46,6 +47,7 @@ func run() error {
 	store := repository.New(s.DB())
 	userCtrl := user.New(store, []byte(cfg.JWTSecret))
 	attCtrl := attendance.New(bc, store)
+	bcWatchCtrl := bcwatch.New(s.Logger(), *s.EthClientWS(), bc, store)
 	handlerV1 := v1.New(userCtrl, attCtrl)
 
 	addRoutes(
@@ -57,6 +59,8 @@ func run() error {
 
 	s.Waiter().Add(
 		s.WaitForWeb,
+		bcWatchCtrl.WatchAttendanceRecorded(),
+		bcWatchCtrl.WatchAttendanceUpdated(),
 		// Add more waiter func, e.g. WaitForGRPC, WaitForJWKsPolling,...
 	)
 
