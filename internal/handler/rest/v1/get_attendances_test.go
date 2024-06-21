@@ -158,7 +158,7 @@ func TestHandler_GetAttendances(t *testing.T) {
 			}
 
 			// When
-			h := New(nil, attCtrlMock)
+			h := New(nil, attCtrlMock, nil)
 			h.GetAttendances().ServeHTTP(w, r)
 
 			// Then

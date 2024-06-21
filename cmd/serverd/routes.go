@@ -65,6 +65,8 @@ func blockchainRoute(cfg config.AppConfig, hdl v1.Handler) http.Handler {
 			r.Use(auth.Middleware(cfg, auth.HasRole(string(model.UserRoleAdmin))))
 
 			r.Put("/attendances/{id}", hdl.UpdateAttendanceToBlockchain())
+			r.Post("/accounts/authorize", hdl.AuthorizeAccount())
+			r.Delete("/accounts/deauthorize", hdl.DeauthorizeAccount())
 		})
 	})
 }

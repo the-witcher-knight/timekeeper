@@ -154,7 +154,7 @@ func TestHandler_RetrieveAttendanceFromBlockchain(t *testing.T) {
 			}
 
 			// When
-			h := New(nil, attCtrlMock)
+			h := New(nil, attCtrlMock, nil)
 			h.RetrieveAttendanceFromBlockchain().ServeHTTP(w, r)
 
 			// Then

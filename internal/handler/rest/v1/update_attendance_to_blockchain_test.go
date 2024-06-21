@@ -113,7 +113,7 @@ func TestHandler_UpdateAttendanceToBlockchain(t *testing.T) {
 			}
 
 			// When
-			h := New(nil, attCtrlMock)
+			h := New(nil, attCtrlMock, nil)
 			h.UpdateAttendanceToBlockchain().ServeHTTP(w, r)
 
 			// Then

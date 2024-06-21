@@ -3,61 +3,66 @@ package v1
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
-	"github.com/the-witcher-knight/timekeeper/internal/controller/attendance"
-	"github.com/the-witcher-knight/timekeeper/internal/pkg/auth"
+	"github.com/the-witcher-knight/timekeeper/internal/controller/bcauth"
 	"github.com/the-witcher-knight/timekeeper/internal/pkg/httpio"
 )
 
-func TestHandler_RecordAttendanceToBlockchain(t *testing.T) {
+func TestHandler_DeauthorizeAccount(t *testing.T) {
+	const testAddr = "0xE59b798c3eb36825fEc1f7aB26236Ce73C750d11"
+
 	type mockCtrl struct {
 		isCalled bool
-		input    int64
+		input    common.Address
 		outErr   error
 	}
 
 	tcs := map[string]struct {
-		givenInput    auth.UserProfile
+		reqBody       string
 		mockCtrl      mockCtrl
 		expStatusCode int
 		expRespBody   httpio.Message
 		expErr        error
 	}{
 		"success": {
-			givenInput: auth.UserProfile{
-				ID: 1,
-			},
+			reqBody: fmt.Sprintf(`{"account":"%s"}`, testAddr),
 			mockCtrl: mockCtrl{
 				isCalled: true,
-				input:    1,
+				input:    common.HexToAddress(testAddr),
 			},
 			expStatusCode: http.StatusOK,
 			expRespBody: httpio.Message{
-				Code: "created",
-				Desc: "Attendance created successfully",
+				Code: "deauthorized",
+				Desc: "Account deauthorized",
 			},
 		},
-		"error - user profile not found": {
+		"error - account blank": {
+			reqBody:       `{"account":""}`,
 			expStatusCode: http.StatusBadRequest,
-			expErr:        errUserProfileNotFound,
+			expErr:        errAccountIsRequired,
 		},
-		"error - unexpected": {
-			givenInput: auth.UserProfile{
-				ID: 1,
-			},
+		"error - account is invalid": {
+			reqBody:       `{"account":"INVALID"}`,
+			expStatusCode: http.StatusBadRequest,
+			expErr:        errAccountAddressIsInvalid,
+		},
+		"error - unexpected error": {
+			reqBody: fmt.Sprintf(`{"account":"%s"}`, testAddr),
 			mockCtrl: mockCtrl{
 				isCalled: true,
-				input:    1,
+				input:    common.HexToAddress(testAddr),
 				outErr:   errors.New("unexpected error"),
 			},
 			expStatusCode: http.StatusInternalServerError,
-			expErr: httpio.Error{
+			expRespBody: httpio.Message{
 				Code: "internal_server_error",
 				Desc: "internal server error",
 			},
@@ -68,19 +73,17 @@ func TestHandler_RecordAttendanceToBlockchain(t *testing.T) {
 		t.Run(desc, func(t *testing.T) {
 			// Given
 			w := httptest.NewRecorder()
-			r := httptest.NewRequest(http.MethodPost, "/attendances", nil)
+			r := httptest.NewRequest(http.MethodPost, "/deauthorize", strings.NewReader(tc.reqBody))
 
-			r = r.WithContext(auth.SetInCtx(r.Context(), tc.givenInput))
-
-			attCtrlMock := new(attendance.MockController)
+			bcMock := new(bcauth.MockController)
 			if tc.mockCtrl.isCalled {
-				attCtrlMock.On("RecordAttendanceToBlockchain", r.Context(), tc.mockCtrl.input).
+				bcMock.On("DeauthorizeAccount", r.Context(), tc.mockCtrl.input).
 					Return(tc.mockCtrl.outErr)
 			}
 
 			// When
-			h := New(nil, attCtrlMock, nil)
-			h.RecordAttendanceToBlockchain().ServeHTTP(w, r)
+			h := New(nil, nil, bcMock)
+			h.DeauthorizeAccount().ServeHTTP(w, r)
 
 			// Then
 			require.Equal(t, tc.expStatusCode, w.Code)
@@ -93,7 +96,7 @@ func TestHandler_RecordAttendanceToBlockchain(t *testing.T) {
 			}
 
 			if tc.mockCtrl.isCalled {
-				attCtrlMock.AssertExpectations(t)
+				bcMock.AssertExpectations(t)
 			}
 		})
 	}
