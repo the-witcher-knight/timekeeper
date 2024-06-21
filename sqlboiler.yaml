@@ -1,0 +1,16 @@
+# Refer https://github.com/volatiletech/sqlboiler#configuration
+schema: "public"
+pkgname: "ormmodel"
+output: "internal/repository/ormmodel"
+wipe: true
+no-tests: true
+no-hooks: true
+
+psql:
+  dbname: "timekeeper"
+  host: "db"
+  port: "5432"
+  user: "timekeeper"
+  pass: ''
+  sslmode: "disable"
+  blacklist: [ "schema_migrations" ]
