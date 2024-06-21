@@ -7,7 +7,7 @@ export
 DOCKER_COMPOSE=docker-compose --file build/docker-compose.yml --project-directory . -p ${PROJECT_NAME}
 
 # Run
-.PHONY: setup serve
+.PHONY: setup serve deploy-contract
 setup: build-dev-image db ganache db-migrate
 
 serve:
