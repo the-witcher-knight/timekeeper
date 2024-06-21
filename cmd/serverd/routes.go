@@ -7,6 +7,8 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	v1 "github.com/the-witcher-knight/timekeeper/internal/handler/rest/v1"
+	"github.com/the-witcher-knight/timekeeper/internal/model"
+	"github.com/the-witcher-knight/timekeeper/internal/pkg/auth"
 	"github.com/the-witcher-knight/timekeeper/internal/pkg/config"
 	"github.com/the-witcher-knight/timekeeper/internal/pkg/httpio"
 	"github.com/the-witcher-knight/timekeeper/internal/pkg/logging"
@@ -45,7 +47,32 @@ func pingRoute() http.HandlerFunc {
 
 func v1Route(cfg config.AppConfig, hdl v1.Handler) http.Handler {
 	return chi.NewRouter().Route("/v1", func(v1 chi.Router) {
+		v1.Mount("/blockchain", blockchainRoute(cfg, hdl))
+		v1.Mount("/attendances", attendanceRoute(cfg, hdl))
 		v1.Mount("/auth", authRoute(hdl))
+	})
+}
+
+func blockchainRoute(cfg config.AppConfig, hdl v1.Handler) http.Handler {
+	return chi.NewRouter().Route("/blockchain", func(bc chi.Router) {
+		bc.Group(func(r chi.Router) {
+			r.Use(auth.Middleware(cfg))
+			r.Get("/attendances", hdl.RetrieveAttendanceFromBlockchain())
+			r.Post("/attendances", hdl.RecordAttendanceToBlockchain())
+		})
+
+		bc.Group(func(r chi.Router) {
+			r.Use(auth.Middleware(cfg, auth.HasRole(string(model.UserRoleAdmin))))
+
+			r.Put("/attendances/{id}", hdl.UpdateAttendanceToBlockchain())
+		})
+	})
+}
+
+func attendanceRoute(cfg config.AppConfig, hdl v1.Handler) http.Handler {
+	return chi.NewRouter().Route("/attendances", func(bc chi.Router) {
+		bc.Use(auth.Middleware(cfg))
+		bc.Get("/", hdl.GetAttendances())
 	})
 }
 

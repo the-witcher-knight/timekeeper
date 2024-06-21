@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/the-witcher-knight/timekeeper/cmd/asciiart"
+	"github.com/the-witcher-knight/timekeeper/internal/blockchain"
+	"github.com/the-witcher-knight/timekeeper/internal/controller/attendance"
 	"github.com/the-witcher-knight/timekeeper/internal/controller/user"
 	v1 "github.com/the-witcher-knight/timekeeper/internal/handler/rest/v1"
 	"github.com/the-witcher-knight/timekeeper/internal/ids"
@@ -36,9 +38,15 @@ func run() error {
 		return err
 	}
 
+	bc, err := blockchain.New(cfg, *s.EthClientHTTP())
+	if err != nil {
+		return err
+	}
+
 	store := repository.New(s.DB())
 	userCtrl := user.New(store, []byte(cfg.JWTSecret))
-	handlerV1 := v1.New(userCtrl)
+	attCtrl := attendance.New(bc, store)
+	handlerV1 := v1.New(userCtrl, attCtrl)
 
 	addRoutes(
 		s.Config(),
