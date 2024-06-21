@@ -8,7 +8,7 @@ DOCKER_COMPOSE=docker-compose --file build/docker-compose.yml --project-director
 
 # Run
 .PHONY: setup serve deploy-contract
-setup: build-dev-image db ganache db-migrate
+setup: db ganache db-migrate
 
 serve:
 	@${DOCKER_COMPOSE} run --service-ports --rm app sh -c 'go run ./cmd/serverd'
