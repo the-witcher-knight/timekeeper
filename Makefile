@@ -8,7 +8,7 @@ DOCKER_COMPOSE=docker-compose --file build/docker-compose.yml --project-director
 
 # Run
 .PHONY: setup serve
-setup: build-dev-image db ganache db-migrate local-env
+setup: build-dev-image db ganache db-migrate
 
 serve:
 	@${DOCKER_COMPOSE} run --service-ports --rm app sh -c 'go run ./cmd/serverd'
@@ -38,7 +38,7 @@ generate:
 	@${DOCKER_COMPOSE} run --rm app sh -c 'go generate ./...'
 
 solc:
-	@${DOCKER_COMPOSE} run --rm solc sh -c "\
+	${DOCKER_COMPOSE} run --rm solc sh -c "\
 		solc --evm-version berlin --overwrite --abi data/contracts/*.sol -o build/contracts && \
 		solc --evm-version berlin --overwrite --bin data/contracts/*.sol -o build/contracts"
 
