@@ -1,0 +1,344 @@
+{
+	"info": {
+		"_postman_id": "69d0bc3b-b8fd-45ca-a3de-f340081d4db9",
+		"name": "timekeeper",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9038568"
+	},
+	"item": [
+		{
+			"name": "blockchain",
+			"item": [
+				{
+					"name": "attendances",
+					"item": [
+						{
+							"name": "Record attendance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/blockchain/attendances",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"blockchain",
+										"attendances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve attendance",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/v1/blockchain/attendances?from_time=2024-06-19T00:00:00%2B07:00&to_time=2024-06-21T00:00:00%2B07:00",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"blockchain",
+										"attendances"
+									],
+									"query": [
+										{
+											"key": "employer_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "from_time",
+											"value": "2024-06-19T00:00:00%2B07:00"
+										},
+										{
+											"key": "to_time",
+											"value": "2024-06-21T00:00:00%2B07:00"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update attendance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 349351968772,\n    \"employer_id\": 90546637315,\n    \"check_in_time\": \"2024-06-19T16:36:32Z\",\n    \"notes\": \"Updated information\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/blockchain/attendances/349351968772",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"blockchain",
+										"attendances",
+										"349351968772"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "accounts",
+					"item": [
+						{
+							"name": "Authorize address",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account\": \"E59b798c3eb36825fEc1f7aB26236Ce73C750d11\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/blockchain/accounts/authorize",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"blockchain",
+										"accounts",
+										"authorize"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deauthorize address",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account\": \"E59b798c3eb36825fEc1f7aB26236Ce73C750d11\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/blockchain/accounts/deauthorize",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"blockchain",
+										"accounts",
+										"deauthorize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "attendances",
+			"item": [
+				{
+					"name": "List attendance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/attendances?employer_id=&from_time=2024-06-19T00:00:00%2B07:00&to_time=2024-06-23T00:00:00%2B07:00",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"attendances"
+							],
+							"query": [
+								{
+									"key": "employer_id",
+									"value": ""
+								},
+								{
+									"key": "from_time",
+									"value": "2024-06-19T00:00:00%2B07:00"
+								},
+								{
+									"key": "to_time",
+									"value": "2024-06-23T00:00:00%2B07:00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "helper",
+			"item": [
+				{
+					"name": "Create employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"user1\",\n    \"email\":\"user1@ex.com\",\n    \"password\":\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/helpers/users/employee",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"helpers",
+								"users",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"admin1\",\n    \"email\":\"admin1@ex.com\",\n    \"password\":\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/helpers/users/admin",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"helpers",
+								"users",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin1@ex.com\",\n    \"password\":\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/auth/token",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

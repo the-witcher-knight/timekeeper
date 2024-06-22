@@ -1,0 +1,99 @@
+# timekeeper
+
+###
+# group: blockchain / attendances
+# @name Record attendance
+POST {{HOST}}/v1/blockchain/attendances
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+
+###
+# group: blockchain / attendances
+# @name Retrieve attendance
+GET {{HOST}}/v1/blockchain/attendances?
+    employer_id=1&
+    from_time=2024-06-19T00:00:00%2B07:00&
+    to_time=2024-06-21T00:00:00%2B07:00
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+
+###
+# group: blockchain / attendances
+# @name Update attendance
+PUT {{HOST}}/v1/blockchain/attendances/349351968772
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "id": 349351968772,
+    "employer_id": 90546637315,
+    "check_in_time": "2024-06-19T16:36:32Z",
+    "notes": "Updated information"
+}
+
+###
+# group: blockchain / accounts
+# @name Authorize address
+POST {{HOST}}/v1/blockchain/accounts/authorize
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "account": "E59b798c3eb36825fEc1f7aB26236Ce73C750d11"
+}
+
+###
+# group: blockchain / accounts
+# @name Deauthorize address
+DELETE {{HOST}}/v1/blockchain/accounts/deauthorize
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "account": "E59b798c3eb36825fEc1f7aB26236Ce73C750d11"
+}
+
+###
+# group: attendances
+# @name List attendance
+GET {{HOST}}/v1/attendances?
+    employer_id=&
+    from_time=2024-06-19T00:00:00%2B07:00&
+    to_time=2024-06-23T00:00:00%2B07:00
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+
+###
+# group: helper
+# @name Create employee
+POST {{HOST}}/helpers/users/employee
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "name": "user1",
+    "email": "user1@ex.com",
+    "password": "password"
+}
+
+###
+# group: helper
+# @name Create admin
+POST {{HOST}}/helpers/users/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "name": "admin1",
+    "email": "admin1@ex.com",
+    "password": "password"
+}
+
+###
+# group: auth
+# @name Sign in
+POST {{HOST}}/v1/auth/token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkwMzYwNzgsImlhdCI6MTcxOTAzMjQ3OCwiaWQiOjk1MjEwNzAwODA0LCJyb2xlIjpbIkVNUExPWUVFIl0sInN1YiI6Ijk1MjEwNzAwODA0In0.eL_dehRxegt02foMjSY21oBf7neiHBtPeTPxMT2Z2nc
+Content-Type: application/json
+
+{
+    "email": "admin1@ex.com",
+    "password": "password"
+}
